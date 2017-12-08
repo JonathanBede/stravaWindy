@@ -5,17 +5,17 @@ body {
 }
 
 header {
-  height: 40px;
+  height: 30px;
   text-align: center;
-  padding: 30px 0;
-  background: #fff;
+  padding: 20px 0;
+  background: #fc4c02;
   display: flex;
   justify-content: center;
   box-shadow: 0 1px 2px rgba(0,0,0,0.025);
 }
 
 header h1 {
-  color: #fc4c02;
+  color: #fff;
   margin: 0;
 }
 
@@ -34,6 +34,9 @@ header h1 {
   font-size: 20px;
   color: #000;
   margin: 0;
+  flex: 1;
+  text-align: right;
+  margin-right: 50px;
 }
 
 .search-results-continer .search-segment-name .search-input{
@@ -57,6 +60,10 @@ header h1 {
 .search-results-continer .search-segment-name .search-input button:hover {
   background: #bb3902;
   cursor: pointer;
+}
+
+*:focus {   
+  outline: none;
 }
 
 .search-results {
@@ -103,4 +110,13 @@ header h1 {
 .search-results .weather {
   display: flex;
   flex-direction: row;
+}
+
+.weather .arrows {
+  position: relative;
+  width: 40px;
+}
+
+.weather .arrows svg {
+  position: absolute;
 }

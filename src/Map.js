@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 
 export class Map extends Component {
+  constructor(props) {
+    super(props)
+  }
 
     componentDidMount() {
         this.loadMap();
@@ -23,8 +26,8 @@ export class Map extends Component {
           const node = ReactDOM.findDOMNode(mapRef);
 
           let zoom = 14;
-          let lat = 37.774929;
-          let lng = -122.419416;
+          let lat = this.props.startLat;
+          let lng = this.props.startLong;
           const center = new maps.LatLng(lat, lng);
           const mapConfig = Object.assign({}, {
             center: center,

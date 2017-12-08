@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Weather from './Weather';
-import Map from './MapContainer';
 import secToMin from 'sec-to-min';
 
 
@@ -44,7 +43,7 @@ class Strava extends Component {
   segmentDirection() {
     const segmentStart = {x: this.state.segmentData.start_latitude, y: this.state.segmentData.start_longitude};
     const segmentEnd = {x: this.state.segmentData.end_latitude, y: this.state.segmentData.end_longitude};
-    const segmentBearing = Math.atan2(segmentEnd.y - segmentStart.y, segmentEnd.x - segmentStart.x) * 180 / Math.PI + 90;
+    const segmentBearing = Math.atan2(segmentEnd.y - segmentStart.y, segmentEnd.x - segmentStart.x) * 180 / Math.PI;
 
     console.log(segmentBearing);
 
@@ -69,10 +68,12 @@ class Strava extends Component {
 
 
   render() {
-    const divStyle = {
-      color: 'blue',
-      transform: 'rotateZ(' + this.state.segmentBearing + 'deg)'
+    const windBearing = {
+      fill: '#ddd',
+      transform: `rotateZ(${this.state.segmentBearing}deg)`
     };
+
+
 
     return (
       <div className="search-results-continer">
@@ -81,17 +82,24 @@ class Strava extends Component {
           <input onChange={this.handleChange.bind(this)}/>
           <button onClick={this.buildSegment.bind(this)}>get segment</button>
         </form>
-          <h2>{this.state.segmentData.name}</h2>
-          <svg style={divStyle} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M22 12l-20 12 5-12-5-12z"/></svg>
-        </div>
-        <div className="search-segment-name">
-          <Map startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude}></Map>
+          <h2><a href="">{this.state.segmentData.name}</a></h2>
+          <svg style={windBearing}xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0l8 9h-6v15h-4v-15h-6z"/></svg>
         </div>
         <div className="search-results">
           <ul>
-            {this.state.leaderData.entries.map(item =>
-              <li key={item.athlete_name}><div className="segment-info"><span className="segment-time">{secToMin(item.elapsed_time)}</span>{item.athlete_name}</div> <Weather startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude} time={item.start_date}></Weather></li>
-            )}
+            {this.state.leaderData.entries.map(item => {
+              const date = new Date(item.start_date);
+              console.log(date);
+              return (
+                <li key={item.athlete_name}>
+                  <div className="segment-info">
+                    <span className="segment-time">{secToMin(item.elapsed_time)}</span>
+                    {date.toDateString()} - {item.athlete_name}
+                  </div> 
+                  <Weather startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude} time={item.start_date} segmentBearing={this.state.segmentBearing} />
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

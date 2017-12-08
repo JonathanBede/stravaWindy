@@ -4,6 +4,10 @@ import {GoogleApiWrapper} from 'google-maps-react';
 import Map from './Map';
 
 export class MapContainer extends Component {
+  constructor(props) {
+    super(props)
+  }
+
     render() {
       if (!this.props.loaded) {
         return <div>Loading...</div>
