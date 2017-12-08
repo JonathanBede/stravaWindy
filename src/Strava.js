@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Weather from './Weather';
+import Map from './MapContainer';
 
 const testID = 12064511
 
@@ -62,7 +63,9 @@ class Strava extends Component {
     return (
       <div className="search-results-continer">
         <div className="search-segment-name">{this.state.segmentData.name} - {this.state.segmentBearing}</div>
-        <div className="search-segment-name">map</div>
+        <div className="search-segment-name">
+          <Map startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude}></Map>
+        </div>
         <div className="search-results">
           <ul>
             {this.state.leaderData.entries.map(item =>
