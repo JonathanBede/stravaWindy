@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Weather from './Weather';
+import Map from './MapContainer';
 import secToMin from 'sec-to-min';
 
 
@@ -83,7 +84,9 @@ class Strava extends Component {
           <h2>{this.state.segmentData.name}</h2>
           <svg style={divStyle} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M22 12l-20 12 5-12-5-12z"/></svg>
         </div>
-        <div className="search-segment-name">map</div>
+        <div className="search-segment-name">
+          <Map startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude}></Map>
+        </div>
         <div className="search-results">
           <ul>
             {this.state.leaderData.entries.map(item =>
