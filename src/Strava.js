@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import Weather from './Weather';
+import secToMin from 'sec-to-min';
 
 const testID = 12064511
 
@@ -59,14 +60,22 @@ class Strava extends Component {
 
 
   render() {
+    const divStyle = {
+      color: 'blue',
+      transform: 'rotateZ(' + this.state.segmentBearing + 'deg)'
+    };
+
     return (
       <div className="search-results-continer">
-        <div className="search-segment-name">{this.state.segmentData.name} - {this.state.segmentBearing}</div>
+        <div className="search-segment-name">
+          <h2>{this.state.segmentData.name}</h2>
+          <svg style={divStyle} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M22 12l-20 12 5-12-5-12z"/></svg>
+        </div>
         <div className="search-segment-name">map</div>
         <div className="search-results">
           <ul>
             {this.state.leaderData.entries.map(item =>
-              <li key={item.athlete_name}>{item.athlete_name} - {item.elapsed_time} - <Weather startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude} time={item.start_date}></Weather></li>
+              <li key={item.athlete_name}><div className="segment-info"><span className="segment-time">{secToMin(item.elapsed_time)}</span>{item.athlete_name}</div> <Weather startLat={this.state.segmentData.start_latitude} startLong={this.state.segmentData.start_longitude} time={item.start_date}></Weather></li>
             )}
           </ul>
         </div>
