@@ -3,7 +3,6 @@ import Axios from 'axios';
 import Weather from './Weather';
 import secToMin from 'sec-to-min';
 
-const testID = 12064511
 
 const urlForSegment = segmentID => `https://www.strava.com/api/v3/segments/${segmentID}?access_token=ea0e82c6e8cc3d19a57f22823f175b52062ce456`
 const urlForLeaderboard = segmentID => `https://www.strava.com/api/v3/segments/${segmentID}/leaderboard?access_token=ea0e82c6e8cc3d19a57f22823f175b52062ce456`
@@ -16,12 +15,12 @@ class Strava extends Component {
       leaderData: {
         entries: []
       },
-
+      searchData: []
     }
   }
 
   getSegment() {
-    Axios.get(urlForSegment(testID))
+    Axios.get(urlForSegment(this.state.searchData))
       .then((response) => {
         this.setState({segmentData: response.data})
         this.segmentDirection();
@@ -32,7 +31,7 @@ class Strava extends Component {
   };
 
   getLeaderboard() {
-    Axios.get(urlForLeaderboard(testID))
+    Axios.get(urlForLeaderboard(this.state.searchData))
     .then((response) => {
       this.setState({leaderData: response.data})
     })
@@ -53,9 +52,18 @@ class Strava extends Component {
     });
   }
 
-  componentDidMount() {
+  buildSegment(event) {
+    event.preventDefault();
     this.getLeaderboard();
     this.getSegment();
+  }
+
+  handleChange(event) {
+    event.preventDefault();
+    let value = event.target.value;
+    this.setState({
+      searchData: value
+    })
   }
 
 
@@ -68,6 +76,10 @@ class Strava extends Component {
     return (
       <div className="search-results-continer">
         <div className="search-segment-name">
+        <form className="search-input">
+          <input onChange={this.handleChange.bind(this)}/>
+          <button onClick={this.buildSegment.bind(this)}>get segment</button>
+        </form>
           <h2>{this.state.segmentData.name}</h2>
           <svg style={divStyle} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M22 12l-20 12 5-12-5-12z"/></svg>
         </div>
